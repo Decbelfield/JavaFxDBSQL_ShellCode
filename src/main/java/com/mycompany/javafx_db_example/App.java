@@ -2,11 +2,16 @@ package com.mycompany.javafx_db_example;
 
 import com.mycompany.javafx_db_example.db.ConnDbOps;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
 import javafx.scene.paint.Color;
 
@@ -48,10 +53,12 @@ public class App extends Application {
             System.out.println("| To display all users,   press 'a' |");
             System.out.println("| To insert to the DB,    press 'i' |");
             System.out.println("| To query by name,       press 'q' |");
+            System.out.println("| To edit users,          press 'b' |");
+            System.out.println("| To delete users,        press 'd' |");
             System.out.println("| To exit,                press 'e' |");
             System.out.println("===================================");
             System.out.print("Enter your choice: ");
-            input = scan.next().charAt(0);
+            input = scan.nextLine().charAt(0);
 
             switch (input) {
                 case 'g':
@@ -67,15 +74,15 @@ public class App extends Application {
 
                 case 'i':
                     System.out.print("Enter Name: ");
-                    String name = scan.next();
+                    String name = scan.nextLine();
                     System.out.print("Enter Email: ");
-                    String email = scan.next();
+                    String email = scan.nextLine();
                     System.out.print("Enter Phone: ");
-                    String phone = scan.next();
+                    String phone = scan.nextLine();
                     System.out.print("Enter Address: ");
-                    String address = scan.next();
+                    String address = scan.nextLine();
                     System.out.print("Enter Password: ");
-                    String password = scan.next();
+                    String password = scan.nextLine();
                     cdbop.insertUser(name, email, phone, address, password); //Your insertUser method
                     break;
                 case 'q':
@@ -83,11 +90,8 @@ public class App extends Application {
                     String queryName = scan.next();
                     cdbop.queryUserByName(queryName); //Your queryUserByName method
                     break;
-                case 'e':
-                    System.out.println("Exiting...");
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                case 'b':
+
             }
             System.out.println(" ");
         } while (input != 'e');
@@ -96,8 +100,5 @@ public class App extends Application {
 
        
     }
-
-
-
 
 }

@@ -4,6 +4,8 @@
  */
 package com.mycompany.javafx_db_example.db;
 
+import javafx.fxml.FXML;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,21 +18,25 @@ import java.sql.Statement;
  * @author MoaathAlrajab
  */
 public class ConnDbOps {
-    
-    
+
+
+    final String MYSQL_SERVER_URL = "jdbc:mysql://csc311server2001.mariadb.database.azure.com/";
+    final String DB_URL = "jdbc:mysql://csc311server2001.mariadb.database.azure.com/vbvbvbvb";
+    final String USERNAME = "decbelfield@csc311server2001";
+    final String PASSWORD = "D00d!e62";
     public  boolean connectToDatabase() {
         boolean hasRegistredUsers = false;
 
-        final String MYSQL_SERVER_URL = "jdbc:mysql://localhost/";
-        final String DB_URL = "jdbc:mysql://localhost:3306/DBname";
-        final String USERNAME = "username";
-        final String PASSWORD = "password";
-        //Class.forName("com.mysql.jdbc.Driver");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         try {
             //First, connect to MYSQL server and create the database if not created
             Connection conn = DriverManager.getConnection(MYSQL_SERVER_URL, USERNAME, PASSWORD);
             Statement statement = conn.createStatement();
-            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS DBname");
+            statement.executeUpdate("CREATE DATABASE IF NOT EXISTS vbvbvbvb");
             statement.close();
             conn.close();
 
@@ -69,9 +75,7 @@ public class ConnDbOps {
     }
 
     public  void queryUserByName(String name) {
-        final String DB_URL = "jdbc:mysql://localhost:3306/DBname";
-        final String USERNAME = "username";
-        final String PASSWORD = "password";
+
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
@@ -97,9 +101,7 @@ public class ConnDbOps {
     }
 
     public  void listAllUsers() {
-        final String DB_URL = "jdbc:mysql://localhost:3306/DBname";
-        final String USERNAME = "username";
-        final String PASSWORD = "password";
+
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
@@ -125,9 +127,7 @@ public class ConnDbOps {
     }
 
     public  void insertUser(String name, String email, String phone, String address, String password) {
-        final String DB_URL = "jdbc:mysql://localhost:3306/DBname";
-        final String USERNAME = "username";
-        final String PASSWORD = "password";
+
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);

@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"com.mycompany.javafx_db_example"}];updateSearchResults();

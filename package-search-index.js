@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.mycompany.javafx_db_example","l":"com.mycompany.javafx_db_example"},{"m":"com.mycompany.javafx_db_example","l":"com.mycompany.javafx_db_example.db"}];updateSearchResults();

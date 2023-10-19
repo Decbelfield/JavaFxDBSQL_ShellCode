@@ -16,6 +16,10 @@ import java.util.Scanner;
 import javafx.scene.paint.Color;
 
 /**
+ *
+ *
+ *
+ * @author Declan Belfield
  * JavaFX App
  */
 public class App extends Application {
@@ -53,8 +57,6 @@ public class App extends Application {
             System.out.println("| To display all users,   press 'a' |");
             System.out.println("| To insert to the DB,    press 'i' |");
             System.out.println("| To query by name,       press 'q' |");
-            System.out.println("| To edit users,          press 'b' |");
-            System.out.println("| To delete users,        press 'd' |");
             System.out.println("| To exit,                press 'e' |");
             System.out.println("===================================");
             System.out.print("Enter your choice: ");
@@ -73,6 +75,7 @@ public class App extends Application {
                     break;
 
                 case 'i':
+                    Person p;
                     System.out.print("Enter Name: ");
                     String name = scan.nextLine();
                     System.out.print("Enter Email: ");
@@ -83,7 +86,10 @@ public class App extends Application {
                     String address = scan.nextLine();
                     System.out.print("Enter Password: ");
                     String password = scan.nextLine();
-                    cdbop.insertUser(name, email, phone, address, password); //Your insertUser method
+                    System.out.println("Enter Salary");
+                    int salary = scan.nextInt();
+                    p = new Person(name,email,phone,address,password,salary);
+                    cdbop.insertUser(p); //Your insertUser method
                     break;
                 case 'q':
                     System.out.print("Enter the name to query: ");
@@ -91,6 +97,23 @@ public class App extends Application {
                     cdbop.queryUserByName(queryName); //Your queryUserByName method
                     break;
                 case 'b':
+                    System.out.print("Enter the name of the user to update: ");
+                    String userNameUpdated = scan.nextLine();
+                    System.out.print("Enter new Email: ");
+                    String newEmail = scan.nextLine();
+                    System.out.print("Enter new Phone: ");
+                    String newPhone = scan.nextLine();
+                    System.out.print("Enter new Address: ");
+                    String newAddress = scan.nextLine();
+                    System.out.print("Enter new Password: ");
+                    String newPassword = scan.nextLine();
+                    System.out.print("Enter new Salary: ");
+                    int newSalary = scan.nextInt();
+                    Person updatedP = new Person(userNameUpdated, newEmail, newPhone, newAddress, newPassword, newSalary);
+
+                    // Call the updateUser method to update the user's information
+                    cdbop.updateUser(userNameUpdated, newEmail, newPhone, newAddress, newPassword, newSalary);
+                    break;
 
             }
             System.out.println(" ");

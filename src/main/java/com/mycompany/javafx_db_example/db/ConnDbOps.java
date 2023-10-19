@@ -4,7 +4,7 @@
  */
 package com.mycompany.javafx_db_example.db;
 
-import javafx.fxml.FXML;
+import com.mycompany.javafx_db_example.Person;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,8 +14,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
- * @author MoaathAlrajab
+ * <p>This connects the program to the database as a way to store the entered information
+ * in which it will save the Person in the database which will then be able to be accessed
+ * later by the program for display <p/>
+ * @author Declan Belfield
  */
 public class ConnDbOps {
 
@@ -24,6 +26,13 @@ public class ConnDbOps {
     final String DB_URL = "jdbc:mysql://csc311server2001.mariadb.database.azure.com/vbvbvbvb";
     final String USERNAME = "decbelfield@csc311server2001";
     final String PASSWORD = "D00d!e62";
+
+    /**
+     * This code connects the project to the database and then tests if the
+     * user is a Registered user if not it will update the information
+     * they have entered and Register them as a user.
+     * @return hasRegisteredUsers
+     */
     public  boolean connectToDatabase() {
         boolean hasRegistredUsers = false;
 
@@ -49,7 +58,8 @@ public class ConnDbOps {
                     + "email VARCHAR(200) NOT NULL UNIQUE,"
                     + "phone VARCHAR(200),"
                     + "address VARCHAR(200),"
-                    + "password VARCHAR(200) NOT NULL"
+                    + "password VARCHAR(200) NOT NULL,"
+                    + "salary INT()"
                     + ")";
             statement.executeUpdate(sql);
 
@@ -74,6 +84,11 @@ public class ConnDbOps {
         return hasRegistredUsers;
     }
 
+    /**
+     * <p>This will search the database for the information tied to the entered
+     * name in which it will pull up the name,email,phone,address,password,and salary<p/>
+     * @param name
+     */
     public  void queryUserByName(String name) {
 
 
@@ -90,7 +105,8 @@ public class ConnDbOps {
                 String email = resultSet.getString("email");
                 String phone = resultSet.getString("phone");
                 String address = resultSet.getString("address");
-                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email + ", Phone: " + phone + ", Address: " + address);
+                int salary = resultSet.getInt("Salary");
+                System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email + ", Phone: " + phone + ", Address: " + address + ", Salary " + salary );
             }
 
             preparedStatement.close();
@@ -100,6 +116,10 @@ public class ConnDbOps {
         }
     }
 
+    /**
+     * This lists all Registered users that are within the database and
+     * displays their information
+     */
     public  void listAllUsers() {
 
 
@@ -116,6 +136,7 @@ public class ConnDbOps {
                 String email = resultSet.getString("email");
                 String phone = resultSet.getString("phone");
                 String address = resultSet.getString("address");
+                int salary = resultSet.getInt("salary");
                 System.out.println("ID: " + id + ", Name: " + name + ", Email: " + email + ", Phone: " + phone + ", Address: " + address);
             }
 
@@ -126,18 +147,24 @@ public class ConnDbOps {
         }
     }
 
-    public  void insertUser(String name, String email, String phone, String address, String password) {
+    /**
+     * This allows for a new user to be Registered within the database and to have their
+     * information that they entered to be saved
+     * @param person
+     */
+    public void insertUser(Person person) {
 
 
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-            String sql = "INSERT INTO users (name, email, phone, address, password) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, email, phone, address, password,salary) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, email);
-            preparedStatement.setString(3, phone);
-            preparedStatement.setString(4, address);
-            preparedStatement.setString(5, password);
+            preparedStatement.setString(1, person.getName());
+            preparedStatement.setString(2, person.getEmail());
+            preparedStatement.setString(3, person.getPhone());
+            preparedStatement.setString(4, person.getAddress());
+            preparedStatement.setString(5, person.getPassword());
+            preparedStatement.setInt(6, person.getSalary());
 
             int row = preparedStatement.executeUpdate();
 
@@ -151,6 +178,32 @@ public class ConnDbOps {
             e.printStackTrace();
         }
     }
+    public void updateUser(String name, String email, String phone, String address, String password, int salary) {
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            String sql = "UPDATE users SET email=?, phone=?, address=?, password=?, salary=? WHERE name=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, phone);
+            preparedStatement.setString(3, address);
+            preparedStatement.setString(4, password);
+            preparedStatement.setInt(5, salary);
+            preparedStatement.setString(6, name);
 
-    
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("User information updated successfully.");
+            }
+            else
+            {
+                System.out.println("No user found");
+            }
+
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
